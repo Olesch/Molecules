@@ -222,72 +222,26 @@ public class Controller : MonoBehaviour
         }
         GetMolecule(clickPos).state.visited = true;
 
-        Molecule neighbour;
-        if (GetMolecule(clickPos).state.dirs[Molecule.Directions.LEFT])
+        foreach ( Molecule.Directions dir in Enum.GetValues(typeof(Molecule.Directions)))
         {
-            neighbour = GetMolecule(clickPos + Vector3Int.left);
-            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Molecule.Directions.RIGHT])
+            Molecule neighbour;
+            if (GetMolecule(clickPos).state.dirs[dir])
             {
-                if (!Recurse(clickPos + Vector3Int.left))
+                neighbour = GetMolecule(Vector3Int.RoundToInt(Molecule.addDirectionPostition(clickPos, dir)));
+                if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Molecule.getComplimentaryDirection(dir)])
+                {
+                    if (!Recurse(Vector3Int.RoundToInt(Molecule.addDirectionPostition(clickPos, dir))))
+                    {
+                        return false;
+                    }
+                }
+                else
                 {
                     return false;
                 }
             }
-            else
-            {
-                return false;
-            }
         }
-
-        if (GetMolecule(clickPos).state.dirs[Molecule.Directions.RIGHT])
-        {
-            neighbour = GetMolecule(clickPos + Vector3Int.right);
-            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Molecule.Directions.LEFT])
-            {
-                if (!Recurse(clickPos + Vector3Int.right))
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (GetMolecule(clickPos).state.dirs[Molecule.Directions.UP])
-        {
-
-            neighbour = GetMolecule(clickPos + Vector3Int.up);
-            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Molecule.Directions.DOWN])
-            {
-                if (!Recurse(clickPos + Vector3Int.up))
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (GetMolecule(clickPos).state.dirs[Molecule.Directions.DOWN])
-        {
-
-            neighbour = GetMolecule(clickPos + Vector3Int.down);
-            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Molecule.Directions.UP])
-            {
-                if (!Recurse(clickPos + Vector3Int.down))
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
+        
         return true;
     }
 

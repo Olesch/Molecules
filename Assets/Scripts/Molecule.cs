@@ -21,6 +21,48 @@ public class Molecule : MonoBehaviour
     private Dictionary<Directions, GameObject> dirObjects = new Dictionary<Directions, GameObject>();
 
 
+    static public Directions getComplimentaryDirection(Directions dir)
+    {
+        switch(dir)
+        {
+            case Directions.UP:
+                return Directions.DOWN;
+            case Directions.DOWN:
+                return Directions.UP;
+            case Directions.LEFT:
+                return Directions.RIGHT;
+            case Directions.RIGHT:
+                return Directions.LEFT;
+            default:
+                Debug.Log("Invalid Directions Complimentary!");
+                return 0;
+        }
+    }
+
+    static public Vector3 addDirectionPostition(Vector3 vec, Directions dir)
+    {
+        return vec + getDirectionPostition(dir);
+    }
+
+    static public Vector3 getDirectionPostition(Directions dir)
+    {
+        switch (dir)
+        {
+            case Directions.UP:
+                return Vector3.up;
+            case Directions.DOWN:
+                return Vector3.down;
+            case Directions.LEFT:
+                return Vector3.left;
+            case Directions.RIGHT:
+                return Vector3.right;
+            default:
+                Debug.Log("Invalid Directions Vector!");
+                return Vector3.zero;
+        }
+    }
+
+
     // Start is called before the first frame update
     void Awake()
     {

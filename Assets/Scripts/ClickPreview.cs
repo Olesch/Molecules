@@ -27,7 +27,7 @@ public class ClickPreview : MonoBehaviour
     }
 
 
-    public void setDirection(Directions dir)
+    public void setDirection(Molecule.Directions dir)
     {
         componentSpriteRenderer.sprite = clickerLibrary.GetSprite("Directions", dir.ToString());
     }

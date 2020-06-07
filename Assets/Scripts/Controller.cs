@@ -6,22 +6,6 @@ using UnityEngine.Experimental.U2D.Animation;
 using UnityEngine.Serialization;
 using System;
 
-public enum Directions
-{
-    UP,
-    RIGHT,
-    DOWN,
-    LEFT
-}
-
-public class Field
-{
-    public bool enabled;
-    public bool visited;
-    public Dictionary<Directions, bool> dirs = new Dictionary<Directions, bool>();
-
-}
-
 public class Controller : MonoBehaviour
 {
     // References
@@ -56,29 +40,29 @@ public class Controller : MonoBehaviour
 
     }
 
-    private Directions getMouseDirection(Vector3 from, Vector3 to)
+    private Molecule.Directions getMouseDirection(Vector3 from, Vector3 to)
     {
         float angle = Vector3.SignedAngle(to - from, Vector3.right + Vector3.up, Vector3.forward);
         if (angle < 0)
         {
             if (angle < -90)
             {
-                return Directions.LEFT;
+                return Molecule.Directions.LEFT;
             }
             else
             {
-                return Directions.UP;
+                return Molecule.Directions.UP;
             }
         }
         else
         {
             if (angle > 90)
             {
-                return Directions.DOWN;
+                return Molecule.Directions.DOWN;
             }
             else
             {
-                return Directions.RIGHT;
+                return Molecule.Directions.RIGHT;
             }
         }
     }
@@ -87,7 +71,7 @@ public class Controller : MonoBehaviour
     // Mouse States
     private Vector3Int clickPos = new Vector3Int();
     private Vector3 placedPos = new Vector3();
-    private Directions clickDirection;
+    private Molecule.Directions clickDirection;
     private enum ClickMode
     {
         PLACING,
@@ -219,10 +203,10 @@ public class Controller : MonoBehaviour
                 {
                     molecule.state.enabled = false;
                     molecule.state.visited = false;
-                    molecule.state.dirs[Directions.UP] = false;
-                    molecule.state.dirs[Directions.DOWN] = false;
-                    molecule.state.dirs[Directions.LEFT] = false;
-                    molecule.state.dirs[Directions.RIGHT] = false;
+                    molecule.state.dirs[Molecule.Directions.UP] = false;
+                    molecule.state.dirs[Molecule.Directions.DOWN] = false;
+                    molecule.state.dirs[Molecule.Directions.LEFT] = false;
+                    molecule.state.dirs[Molecule.Directions.RIGHT] = false;
                     molecule.UpdateAppearance();
                 }
             }
@@ -239,10 +223,10 @@ public class Controller : MonoBehaviour
         GetMolecule(clickPos).state.visited = true;
 
         Molecule neighbour;
-        if (GetMolecule(clickPos).state.dirs[Directions.LEFT])
+        if (GetMolecule(clickPos).state.dirs[Molecule.Directions.LEFT])
         {
             neighbour = GetMolecule(clickPos + Vector3Int.left);
-            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Directions.RIGHT])
+            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Molecule.Directions.RIGHT])
             {
                 if (!Recurse(clickPos + Vector3Int.left))
                 {
@@ -255,10 +239,10 @@ public class Controller : MonoBehaviour
             }
         }
 
-        if (GetMolecule(clickPos).state.dirs[Directions.RIGHT])
+        if (GetMolecule(clickPos).state.dirs[Molecule.Directions.RIGHT])
         {
             neighbour = GetMolecule(clickPos + Vector3Int.right);
-            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Directions.LEFT])
+            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Molecule.Directions.LEFT])
             {
                 if (!Recurse(clickPos + Vector3Int.right))
                 {
@@ -271,11 +255,11 @@ public class Controller : MonoBehaviour
             }
         }
 
-        if (GetMolecule(clickPos).state.dirs[Directions.UP])
+        if (GetMolecule(clickPos).state.dirs[Molecule.Directions.UP])
         {
 
             neighbour = GetMolecule(clickPos + Vector3Int.up);
-            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Directions.DOWN])
+            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Molecule.Directions.DOWN])
             {
                 if (!Recurse(clickPos + Vector3Int.up))
                 {
@@ -288,11 +272,11 @@ public class Controller : MonoBehaviour
             }
         }
 
-        if (GetMolecule(clickPos).state.dirs[Directions.DOWN])
+        if (GetMolecule(clickPos).state.dirs[Molecule.Directions.DOWN])
         {
 
             neighbour = GetMolecule(clickPos + Vector3Int.down);
-            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Directions.UP])
+            if (neighbour && neighbour.state.enabled && neighbour.state.dirs[Molecule.Directions.UP])
             {
                 if (!Recurse(clickPos + Vector3Int.down))
                 {

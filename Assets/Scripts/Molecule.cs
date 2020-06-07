@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class Molecule : MonoBehaviour
 {
+    public enum Directions
+    {
+        UP,
+        RIGHT,
+        DOWN,
+        LEFT
+    }
+
     public GameObject upObject;
     public GameObject downObject;
     public GameObject leftObject;
     public GameObject rightObject;
 
-    public Field state = new Field();
+    public GridInfo<Molecule.Directions> state = new GridInfo<Molecule.Directions>();
     private Dictionary<Directions, GameObject> dirObjects = new Dictionary<Directions, GameObject>();
 
 
